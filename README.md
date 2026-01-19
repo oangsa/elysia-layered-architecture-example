@@ -1,15 +1,248 @@
-# Elysia with Bun runtime
+# Elysia API - Clean Onion Architecture Example
 
-## Getting Started
-To get started with this template, simply paste this command into your terminal:
-```bash
-bun create elysia ./elysia-example
+A production-ready REST API built with [Elysia](https://elysiajs.com/) and [Bun](https://bun.sh/), demonstrating **Clean/Onion Architecture** principles with TypeScript.
+
+## 🏗️ Architecture Overview
+
+This project implements **Clean Onion Architecture**, inspired by ASP.NET Core patterns, ensuring:
+- ✅ **Separation of Concerns** - Clear boundaries between layers
+- ✅ **Dependency Inversion** - Core business logic depends on abstractions
+- ✅ **Testability** - Easy to unit test each layer independently
+- ✅ **Maintainability** - Changes in one layer don't affect others
+- ✅ **Scalability** - Easy to extend and add new features
+
+### Architecture Layers
+
+```
+┌─────────────────────────────────────────┐
+│         Presentation Layer              │  ← Controllers, Routes, Schemas
+├─────────────────────────────────────────┤
+│         Services Layer                  │  ← Business Logic, Use Cases
+├─────────────────────────────────────────┤
+│         Infrastructure Layer            │  ← Database, Mapper, External APIs
+├─────────────────────────────────────────┤
+│         Entities/Domain Layer           │  ← Models, DTOs, Interfaces
+└─────────────────────────────────────────┘
 ```
 
-## Development
-To start the development server run:
+## 📁 Project Structure
+
+```
+src/
+├── Presentation/           # API Layer (Controllers, Routes, Validation)
+│   ├── Controllers/        # Route handlers
+│   └── Schemas/           # Elysia validation schemas
+│
+├── Services/              # Business Logic Layer
+│   ├── Core/             # Service base and manager
+│   └── Master/           # Domain services (UserService, etc.)
+│
+├── Services.Contracts/    # Service Interfaces
+│   ├── Core/             # Core service interfaces
+│   └── Master/           # Domain service interfaces
+│
+├── Infrastructure/        # Infrastructure Layer
+│   ├── Database/         # Database connection and configuration
+│   ├── Mapper/           # AutoMapper setup
+│   └── Repository/       # Data access implementations
+│
+├── Entities/             # Domain Layer
+│   ├── Models/           # Domain entities
+│   ├── DataTransferObjects/  # DTOs for data transfer
+│   ├── RequestFeatures/  # Pagination, search, filtering
+│   └── Exceptions/       # Custom exception classes
+│
+└── Shared/               # Shared utilities and constants
+    └── Constants/        # Error messages, constants
+```
+
+## 🚀 Technologies
+
+- **[Elysia](https://elysiajs.com/)** - Fast and ergonomic web framework
+- **[Bun](https://bun.sh/)** - Fast all-in-one JavaScript runtime
+- **[Prisma](https://www.prisma.io/)** - Next-generation ORM
+- **[AutoMapper](https://automapperts.netlify.app/)** - Object-to-object mapping
+- **[TypeScript](https://www.typescriptlang.org/)** - Type-safe JavaScript
+
+## 🎯 Features
+
+- ✅ **Clean Architecture** - Well-organized, maintainable code structure
+- ✅ **Dependency Injection** - Service and repository pattern
+- ✅ **AutoMapper** - Automatic DTO to Entity mapping
+- ✅ **Type-Safe Validation** - Elysia schema validation
+- ✅ **Repository Pattern** - Abstracted data access layer
+- ✅ **Pagination & Filtering** - Built-in request features
+- ✅ **Exception Handling** - Custom exception hierarchy
+- ✅ **Database Agnostic** - Easy to swap databases via Prisma
+
+## 📦 Getting Started
+
+### Prerequisites
+
+- [Bun](https://bun.sh/) installed (v1.0 or higher)
+- Database (PostgreSQL, MySQL, SQLite, etc.)
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd elysia_api
+   ```
+
+2. **Install dependencies**
+   ```bash
+   bun install
+   ```
+
+3. **Configure database**
+
+   Update `prisma/schema.prisma` with your database connection:
+   ```prisma
+   datasource db {
+     provider = "postgresql"  // or mysql, sqlite, etc.
+     url      = env("DATABASE_URL")
+   }
+   ```
+
+4. **Set environment variables**
+   ```bash
+   DATABASE_URL="your-database-connection-string"
+   ```
+
+5. **Run migrations**
+   ```bash
+   bunx prisma migrate dev
+   ```
+
+6. **Generate Prisma Client**
+   ```bash
+   bunx prisma generate
+   ```
+
+### Development
+
+Start the development server with hot reload:
 ```bash
 bun run dev
 ```
 
-Open http://localhost:3000/ with your browser to see the result.
+The API will be available at `http://localhost:3000`
+
+### Production
+
+Build and run for production:
+```bash
+bun run start
+```
+
+## 📚 API Documentation
+
+### User Endpoints
+
+#### Search Users (with pagination and filtering)
+```http
+POST /api/users/search
+Content-Type: application/json
+
+{
+  "pageNumber": 1,
+  "pageSize": 10,
+  "orderBy": "Name",
+  "search": [
+    {
+      "name": "Email",
+      "condition": "contains",
+      "value": "@example.com"
+    }
+  ]
+}
+```
+
+#### Get User by ID
+```http
+GET /api/users/:id
+```
+
+#### Create User
+```http
+POST /api/users
+Content-Type: application/json
+
+{
+  "email": "user@example.com",
+  "name": "John Doe",
+  "password": "securePassword123"
+}
+```
+
+#### Update User
+```http
+PUT /api/users/:id
+Content-Type: application/json
+
+{
+  "email": "user@example.com",
+  "name": "John Doe",
+  "password": "newPassword123"
+}
+```
+
+#### Delete User
+```http
+DELETE /api/users/:id
+```
+
+#### Delete Multiple Users
+```http
+DELETE /api/users/collection
+Content-Type: application/json
+
+{
+  "ids": ["1", "2", "3"]
+}
+```
+
+## 🏛️ Architecture Details
+
+### Presentation Layer
+- **Controllers**: Handle HTTP requests and responses
+- **Schemas**: Define request/response validation using Elysia's TypeBox schemas
+- **Routes**: Register endpoints and middleware
+
+### Services Layer
+- **Business Logic**: Core application logic and use cases
+- **Service Manager**: Coordinates multiple services
+- **Validation**: Business rule validation
+
+### Infrastructure Layer
+- **Repository**: Data access implementations
+- **Database**: Prisma ORM configuration
+- **Mapper**: AutoMapper for DTO/Entity conversion
+- **Adapters**: External service integrations
+
+### Domain Layer
+- **Entities**: Core business objects
+- **DTOs**: Data transfer objects for API communication
+- **Interfaces**: Contracts for services and repositories
+- **Exceptions**: Custom error types
+
+## 🧪 Testing
+
+```bash
+bun test
+```
+
+## 🤝 Contributing
+
+Contributions are welcome! This project serves as a reference implementation for Clean Architecture in Elysia.
+
+## 📝 License
+
+MIT License
+
+## 🙏 Acknowledgments
+
+- Inspired by ASP.NET Core Clean Architecture patterns
+- Built with the amazing Elysia framework
+- Powered by Bun's incredible performance
