@@ -1,6 +1,6 @@
-import { Search } from "../../../../Entities/RequestFeatures/Core/Search";
-import { SearchTerm } from "../../../../Entities/RequestFeatures/Core/SearchTerm";
-import { QueryBuilderBadRequestException } from "../../../../Entities/Exceptions/QueryBuilderBadRequestExeption";
+import { Search } from "../../../Entities/RequestFeatures/Core/Search";
+import { SearchTerm } from "../../../Entities/RequestFeatures/Core/SearchTerm";
+import { QueryBuilderBadRequestException } from "../../../Entities/Exceptions/QueryBuilderBadRequestExeption";
 
 type WhereCondition = Record<string, unknown>;
 type OrderByCondition = Record<string, unknown>;

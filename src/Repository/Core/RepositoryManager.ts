@@ -1,7 +1,7 @@
-import { IRepositoryManager } from "../../../Contracts/Repository/Core/IRepositoryManager";
-import { IUserRepository } from "../../../Contracts/Repository/IUserRepository";
+import { IRepositoryManager } from "../../Contracts/Repository/Core/IRepositoryManager";
+import { IUserRepository } from "../../Contracts/Repository/IUserRepository";
 import { UserRepository } from "../UserRepository";
-import { PrismaFactory } from "../../Database/PrismaFactory";
+import { PrismaFactory } from "../../Infrastructure/Database/PrismaFactory";
 
 export class RepositoryManager implements IRepositoryManager
 {

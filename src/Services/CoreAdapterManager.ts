@@ -1,6 +1,6 @@
 import { Mapper } from '@automapper/core';
 import { IRepositoryManager } from "../Contracts/Repository/Core/IRepositoryManager";
-import { RepositoryManager } from "../Infrastructure/Repository/Core/RepositoryManager";
+import { RepositoryManager } from "../Repository/Core/RepositoryManager";
 import { MapperInstance } from '../Infrastructure/Mapper/MapperInstance';
 
 export interface ICoreAdapterManager

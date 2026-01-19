@@ -1,5 +1,5 @@
-import { PrismaClient } from "../../../../generated/prisma/client";
-import { IRepositoryBase } from "../../../Contracts/Repository/Core/IRepositoryBase";
+import { PrismaClient } from "../../../generated/prisma/client";
+import { IRepositoryBase } from "../../Contracts/Repository/Core/IRepositoryBase";
 
 export abstract class RepositoryBase<T> implements IRepositoryBase<T>
 {

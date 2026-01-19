@@ -1,27 +1,28 @@
 import 'reflect-metadata';
 import { Elysia } from "elysia";
-import { UserController } from "./Presentation/Controllers/UserController";
 import { ServiceManager } from "./Services/Core/ServiceManager";
 import { CoreAdapterManager } from "./Services/CoreAdapterManager";
 import { PrismaFactory } from "./Infrastructure/Database/PrismaFactory";
+import { MapperProfile } from "./MapperProfile";
+import { ControllerManager } from './Presentation/Controllers/Core/ControllerManager';
 
 const app = new Elysia();
 
-// Initialize Prisma Database Connection (like .NET Program.cs)
 PrismaFactory.initialize();
 
-// Initialize dependencies (Dependency Injection)
 const coreAdapterManager = new CoreAdapterManager();
 const serviceManager = new ServiceManager(coreAdapterManager);
+const controllerManager = new ControllerManager(serviceManager);
+const mapper = coreAdapterManager.mapper;
+
+MapperProfile.configure(mapper);
 
 app.get("/", () => ({
   message: "Welcome to Elysia API",
   version: "1.0.0"
 }));
 
-// Register User Controller with DI
-const userController = new UserController(serviceManager);
-userController.RegisterRoutes(app);
+controllerManager.RegisterRoutes(app);
 
 app.listen(3000);
 

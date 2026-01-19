@@ -1,7 +1,7 @@
-import { PrismaClient } from "../../../generated/prisma/client";
-import { IUserRepository } from "../../Contracts/Repository/IUserRepository";
-import { User } from "../../Entities/Models";
-import { PagedList, UserParameter} from "../../Entities/RequestFeatures";
+import { PrismaClient } from "../../generated/prisma/client";
+import { IUserRepository } from "../Contracts/Repository/IUserRepository";
+import { User } from "../Entities/Models";
+import { PagedList, UserParameter} from "../Entities/RequestFeatures";
 import { QueryBuilder } from "./Extensions/Utility/QueryBuilder";
 
 export class UserRepository implements IUserRepository
